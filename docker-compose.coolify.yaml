@@ -1,0 +1,31 @@
+# Production Docker Compose for Coolify/Shipyard Deployment
+#
+# Coolify automatically provides SERVICE_URL_POCKETBASE for internal communication.
+# Configure AUTH_POCKETBASE_URL to point to your auth provider.
+
+services:
+  astro:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - pocketbase
+    environment:
+      # SERVICE_URL_POCKETBASE is injected by Coolify automatically
+      # Configure your auth provider URL here
+      - AUTH_POCKETBASE_URL=${AUTH_POCKETBASE_URL:-http://pocketbase:8090}
+      - AUTH_POCKETBASE_GROUP=${AUTH_POCKETBASE_GROUP:-default}
+    # No ports mapping needed - Coolify uses EXPOSE from Dockerfile
+
+  pocketbase:
+    build:
+      context: ./pocketbase
+      dockerfile: Dockerfile
+    # No ports mapping - Coolify uses EXPOSE from Dockerfile
+    volumes:
+      - pb_data:/pb_data
+
+volumes:
+  pb_data:
+    # Docker-managed volume for PocketBase data persistence
+    # This survives container restarts and redeployments

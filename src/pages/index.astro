@@ -1,0 +1,78 @@
+---
+import Layout from '@levino/shipyard-base/layouts/Page.astro'
+import { getPocketBase } from '@/lib/pocketbase'
+
+interface Todo {
+  id: string
+  title: string
+  completed: boolean
+  user_id: string
+}
+
+let todos: Todo[] = []
+let error = ''
+
+// For demo purposes, use a fixed user_id (in production, get from auth)
+const userId = 'demo-user'
+
+try {
+  const pb = getPocketBase()
+  const result = await pb.collection('todos').getList<Todo>(1, 100, {
+    filter: `user_id = "${userId}"`,
+    sort: '-created',
+  })
+  todos = result.items
+} catch (e) {
+  error = 'Unable to load todos. Make sure PocketBase is running.'
+}
+---
+
+<Layout title="My Todos">
+  <div class="container mx-auto px-4 py-12 max-w-2xl">
+    <h1 class="text-3xl font-bold mb-8">My Todos</h1>
+
+    {error && (
+      <div class="alert alert-warning mb-6">
+        <span>{error}</span>
+      </div>
+    )}
+
+    <form method="POST" action="/todos/add" class="flex gap-2 mb-8">
+      <input
+        type="text"
+        name="title"
+        placeholder="What needs to be done?"
+        class="input input-bordered flex-1"
+        required
+      />
+      <button type="submit" class="btn btn-primary">Add</button>
+    </form>
+
+    {todos.length === 0 && !error && (
+      <p class="text-center text-gray-500 py-8">No todos yet. Add one above!</p>
+    )}
+
+    <ul class="space-y-2">
+      {todos.map((todo) => (
+        <li class="flex items-center gap-3 p-3 bg-base-200 rounded-lg">
+          <form method="POST" action={`/todos/${todo.id}/toggle`}>
+            <button
+              type="submit"
+              class={`btn btn-circle btn-sm ${todo.completed ? 'btn-success' : 'btn-outline'}`}
+            >
+              {todo.completed ? '✓' : ''}
+            </button>
+          </form>
+          <span class={`flex-1 ${todo.completed ? 'line-through text-gray-500' : ''}`}>
+            {todo.title}
+          </span>
+          <form method="POST" action={`/todos/${todo.id}/delete`}>
+            <button type="submit" class="btn btn-ghost btn-sm text-error">
+              ✕
+            </button>
+          </form>
+        </li>
+      ))}
+    </ul>
+  </div>
+</Layout>
