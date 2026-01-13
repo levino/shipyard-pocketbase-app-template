@@ -18,8 +18,8 @@ ENV NODE_ENV=production
 ENV HOST=::
 ENV PORT=3000
 
-# Auth configuration - configure these for your deployment
-# SERVICE_URL_POCKETBASE is injected by Coolify for internal data storage
+# Auth configuration - set AUTH_POCKETBASE_URL to your auth provider
+# Defaults to local pocketbase service, override for external auth
 ENV AUTH_POCKETBASE_URL=http://pocketbase:8090
 ENV AUTH_POCKETBASE_GROUP=default
 
