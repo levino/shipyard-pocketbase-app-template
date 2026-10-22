@@ -4,7 +4,7 @@
 
 services:
   pocketbase-dev:
-    image: ghcr.io/muchobien/pocketbase:latest
+    image: ghcr.io/muchobien/pocketbase:latest@sha256:618171d6df039ab3edd74ef9e6b89d43ec836fd55f5437017b7ed3790e627ab0
     ports:
       - "8090:8090"
     environment:
@@ -16,7 +16,7 @@ services:
     command: ["--automigrate", "--migrationsDir=/pb_migrations"]
 
   pocketbase-test:
-    image: ghcr.io/muchobien/pocketbase:latest
+    image: ghcr.io/muchobien/pocketbase:latest@sha256:618171d6df039ab3edd74ef9e6b89d43ec836fd55f5437017b7ed3790e627ab0
     environment:
       - PB_ADMIN_EMAIL=admin@test.local
       - PB_ADMIN_PASSWORD=testtest123
@@ -26,7 +26,7 @@ services:
     command: ["--migrationsDir=/pb_migrations"]
 
   runner:
-    image: node:22
+    image: node:22@sha256:63538dfe497cc29dfafdda25ada09b46db68a3f4cc205abf1f5d6bf0913f3384
     working_dir: /app
     environment:
       - POCKETBASE_URL=http://pocketbase-dev:8090
@@ -37,7 +37,7 @@ services:
       - pocketbase-dev
 
   playwright:
-    image: mcr.microsoft.com/playwright:v1.57.0-noble
+    image: mcr.microsoft.com/playwright:v1.57.0-noble@sha256:3bed4b1a12f2338642f3d8cba28e291deef3c66bd4a964bbeb3e57bbff511dbd
     working_dir: /app
     environment:
       - POCKETBASE_URL=http://pocketbase-test:8090
