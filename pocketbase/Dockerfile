@@ -1,6 +1,6 @@
 FROM alpine:latest
 
-ARG POCKETBASE_VERSION=0.26.5
+ARG POCKETBASE_VERSION=0.40.5
 ARG TARGETARCH
 
 RUN apk add --no-cache \
