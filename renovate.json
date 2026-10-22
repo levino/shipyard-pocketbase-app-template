@@ -1,14 +1,9 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "description": "Hält Basis-Images (Dockerfile, pocketbase/Dockerfile, docker-compose, Devcontainer – per Digest), die PocketBase-Version, GitHub-Actions und npm-Pakete aktuell; gemergt wird nur, wenn alle Checks (test.yml) am Branch grün sind.",
-  "extends": [
-    "config:recommended",
-    ":disableDependencyDashboard"
-  ],
+  "extends": ["config:recommended", ":disableDependencyDashboard"],
   "timezone": "Europe/Berlin",
-  "labels": [
-    "dependencies"
-  ],
+  "labels": ["dependencies"],
   "osvVulnerabilityAlerts": true,
   "prHourlyLimit": 0,
   "prConcurrentLimit": 20,
@@ -18,12 +13,8 @@
     {
       "customType": "regex",
       "description": "PocketBase-Binary, das in pocketbase/Dockerfile per ARG-Version von GitHub-Releases geladen wird.",
-      "managerFilePatterns": [
-        "/(^|/)Dockerfile$/"
-      ],
-      "matchStrings": [
-        "ARG POCKETBASE_VERSION=(?<currentValue>[0-9.]+)"
-      ],
+      "managerFilePatterns": ["/(^|/)Dockerfile$/"],
+      "matchStrings": ["ARG POCKETBASE_VERSION=(?<currentValue>[0-9.]+)"],
       "depNameTemplate": "pocketbase/pocketbase",
       "datasourceTemplate": "github-releases",
       "extractVersionTemplate": "^v(?<version>.*)$"
@@ -42,23 +33,14 @@
     },
     {
       "description": "Routine-npm-Updates als ein Sammel-PR pro Woche. Sicherheitsfixes ignorieren den Zeitplan.",
-      "matchManagers": [
-        "npm"
-      ],
-      "matchUpdateTypes": [
-        "minor",
-        "patch"
-      ],
+      "matchManagers": ["npm"],
+      "matchUpdateTypes": ["minor", "patch"],
       "groupName": "npm minor-and-patch",
-      "schedule": [
-        "before 6am on monday"
-      ]
+      "schedule": ["before 6am on monday"]
     },
     {
       "description": "Keine Major-PRs. Majors erst, wenn der Support der genutzten Version endet.",
-      "matchUpdateTypes": [
-        "major"
-      ],
+      "matchUpdateTypes": ["major"],
       "enabled": false
     }
   ]
