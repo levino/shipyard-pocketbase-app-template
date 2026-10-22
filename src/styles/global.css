@@ -1,3 +1,8 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@import "@levino/shipyard-base";
+
+@plugin "daisyui" {
+  themes: light --default, dark --prefersdark;
+}
+@plugin "@tailwindcss/typography";

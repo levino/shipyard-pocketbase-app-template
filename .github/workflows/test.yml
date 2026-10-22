@@ -18,25 +18,22 @@ jobs:
             -p 8090:8090 \
             -e PB_ADMIN_EMAIL=admin@test.local \
             -e PB_ADMIN_PASSWORD=testtest123 \
-            ghcr.io/muchobien/pocketbase:latest
+            -v "$GITHUB_WORKSPACE/pocketbase/pb_migrations:/pb_migrations" \
+            ghcr.io/muchobien/pocketbase:latest \
+            --migrationsDir=/pb_migrations
           sleep 3
           docker logs pocketbase
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
+          # Astro 7 verlangt Node >= 22.23.4
           node-version: '22'
+          check-latest: true
           cache: 'npm'
 
       - name: Install dependencies
         run: npm ci
-
-      - name: Setup PocketBase collections
-        run: npm run db:setup
-        env:
-          POCKETBASE_URL: http://localhost:8090
-          PB_ADMIN_EMAIL: admin@test.local
-          PB_ADMIN_PASSWORD: testtest123
 
       - name: Run integration tests
         run: npm run test:bare
@@ -58,25 +55,22 @@ jobs:
             -p 8090:8090 \
             -e PB_ADMIN_EMAIL=admin@test.local \
             -e PB_ADMIN_PASSWORD=testtest123 \
-            ghcr.io/muchobien/pocketbase:latest
+            -v "$GITHUB_WORKSPACE/pocketbase/pb_migrations:/pb_migrations" \
+            ghcr.io/muchobien/pocketbase:latest \
+            --migrationsDir=/pb_migrations
           sleep 3
           docker logs pocketbase
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
+          # Astro 7 verlangt Node >= 22.23.4
           node-version: '22'
+          check-latest: true
           cache: 'npm'
 
       - name: Install dependencies
         run: npm ci
-
-      - name: Setup PocketBase collections
-        run: npm run db:setup
-        env:
-          POCKETBASE_URL: http://localhost:8090
-          PB_ADMIN_EMAIL: admin@test.local
-          PB_ADMIN_PASSWORD: testtest123
 
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium
@@ -123,7 +117,9 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
+          # Astro 7 verlangt Node >= 22.23.4
           node-version: '22'
+          check-latest: true
           cache: 'npm'
 
       - name: Install dependencies
