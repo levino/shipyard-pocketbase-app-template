@@ -4,10 +4,10 @@ A simple todo application template built with [Astro](https://astro.build), [Shi
 
 ## Features
 
-- **Astro 5** - Server-rendered pages, no client-side JavaScript
+- **Astro 7** - Server-rendered pages, no client-side JavaScript
 - **Shipyard** - Pre-built layouts and navigation
 - **PocketBase** - Lightweight backend database
-- **TailwindCSS + DaisyUI** - Styling
+- **Tailwind CSS 4 + daisyUI 5** - Styling
 - **Docker Compose** - Development and production configurations
 - **Vitest + Playwright** - Testing
 
